@@ -23,6 +23,29 @@
 import config as cf
 import model
 import csv
+def initCatalog():
+    catalog = model.newCatalog()
+    return catalog
+
+def loadData(catalog):
+    loadArtworks(catalog)
+    loadArtists(catalog)
+
+def loadArtists(catalog):
+    artistsfile = cf.data_dir + 'MoMA/Artists-utf8-small.csv'
+    input_file = csv.DictReader(open(artistsfile, encoding='utf-8'))
+    for artist in input_file:
+        model.addArtist(catalog, artist)
+
+def loadArtworks(catalog):
+    artworksfile = cf.data_dir + 'MoMA/Artworks-utf8-small.csv'
+    input_file = csv.DictReader(open(artworksfile, encoding='utf-8'))
+    for artwork in input_file:
+        model.addArtwork(catalog, artwork)
+
+
+
+
 
 
 """
@@ -36,3 +59,8 @@ El controlador se encarga de mediar entre la vista y el modelo.
 # Funciones de ordenamiento
 
 # Funciones de consulta sobre el catálogo
+
+def getCronologicalAd (catalog, date0, datef):
+    cronologicalad = model.getCronologicalAd (catalog, date0, datef)
+    model.sortArtworksDate()
+    return cronologicalad

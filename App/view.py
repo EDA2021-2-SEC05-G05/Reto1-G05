@@ -37,7 +37,15 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- ")
+    print("2- Cargar adquisiciones cronológicamente")
+    print("0- Salir")
+
+def initCatalog():
+    return controller.initCatalog()
+
+
+def loadData(catalog):
+    controller.loadData(catalog)
 
 catalog = None
 
@@ -49,10 +57,12 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         print("Cargando información de los archivos ....")
-
+        catalog = initCatalog()
+        loadData(catalog)
     elif int(inputs[0]) == 2:
-        pass
-
+        date0 = input("Ingrese la fecha inicial en formato AAAA-MM-DD: ")
+        datef = input("Ingrese la fecha final en formato AAAA-MM-DD: ")
+        print (controller.getCronologicalAd(catalog, date0, datef))
     else:
         sys.exit(0)
 sys.exit(0)
