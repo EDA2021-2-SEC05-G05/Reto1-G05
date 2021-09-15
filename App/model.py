@@ -28,6 +28,9 @@
 import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import shellsort as sa
+from DISClib.Algorithms.Sorting import mergesort as ml
+from DISClib.Algorithms.Sorting import insertionsort as pq
+from DISClib.Algorithms.Sorting import quicksort as rf
 assert cf
 
 """
@@ -77,7 +80,22 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
     return (int(artwork1["Date"])<int(artwork2["Date"]))
 
 # Funciones de ordenamiento
+def sortArtWork(catalog, size, sort_type):
 
+    start_time = time.process_time()
+
+    if sort_type == "shellsort":
+            sorted_list = sa.sort(sub_list, cmpArtworkByDateAcquired)
+    elif sort_type == "mergesort":
+            sorted_list = ml.sort(sub_list, cmpArtworkByDateAcquired)
+    elif sort_type == "insertionsort":
+            sorted_list = pq.sort(sub_list, cmpArtworkByDateAcquired)
+    elif sort_type == "quicksort":
+            sorted_list = rf.sort(sub_list, cmpArtworkByDateAcquired)
+
+    sub_list = lt.subList(sorted_list, 0, size)
+    
+    return sorted_list
 #def sortArtworksDate(cronologicalad):
     #sa.sort(cronologicalad, comparedate)
 

@@ -58,6 +58,9 @@ El controlador se encarga de mediar entre la vista y el modelo.
 
 # Funciones de ordenamiento
 
+def sortArtWork(catalog, size, sort_type):
+    return model.sortArtWork(catalog, size, sort_type)
+
 # Funciones de consulta sobre el catálogo
 
 #def getCronologicalAd (catalog, date0, datef):
