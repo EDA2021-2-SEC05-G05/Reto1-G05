@@ -25,7 +25,7 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
-import time
+
 
 """
 La vista se encarga de la interacción con el usuario
@@ -47,7 +47,15 @@ def initCatalog(tipo):
 def loadData(catalog):
     controller.loadData(catalog)
 
-
+def printSortResults(artworks, sample=10):
+    size = lt.size(artworks)
+    if size > sample:
+        print("Las primeras ", sample, " obras ordenadas son:")
+        i=1
+        while i <= sample:
+            artwork = lt.getElement(artworks,i)
+            print('Titulo: ' + artwork['Title'] + ' Date: ' + artwork['Date'])
+            i+=1
 catalog = None
 
 """
@@ -62,13 +70,11 @@ while True:
         catalog = initCatalog(tipo)
         loadData(catalog)
     elif int(inputs[0]) == 2:
-        start_time = time.process_time()
-        ext = input("Ingrese la cantidad de elementos que desea ver, no debe ser mayor a " + str(lt.size(catalog["artworks"])))
-        sorttype = input("Escriba el tipo de algoritmo de ordenamiento que desea que se use para ordenar el catálogo de obras, estos son: insertion, shell, merge o quick")
-        stop_time = time.process_time()
-        elapsed_time_mseg = round((stop_time - start_time), 2)
+        ext = input("Ingrese la cantidad de elementos que desea ver, no debe ser mayor a " + str(lt.size(catalog["artworks"])) +": ")
+        sorttype = input("Escriba el tipo de algoritmo de ordenamiento que desea que se use para ordenar el catálogo de obras, estos son: insertion, shell, merge o quick: ")
         artworks = controller.sortArtWork(catalog, int(ext), sorttype)
-        printSortResults(artworks, int(ext))
+        print(lt.size(artworks[1]))
+        printSortResults(artworks[1], int(ext))
     else:
         sys.exit(0)
 sys.exit(0)
