@@ -74,6 +74,7 @@ while True:
         sorttype = input("Escriba el tipo de algoritmo de ordenamiento que desea que se use para ordenar el catálogo de obras, estos son: insertion, shell, merge o quick: ")
         artworks = controller.sortArtWork(catalog, int(ext), sorttype)
         printSortResults(artworks[1])
+        print("Tiempo transcurrido: " + str(artworks[0]))
     else:
         sys.exit(0)
 sys.exit(0)
