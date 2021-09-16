@@ -77,24 +77,25 @@ def addArtist(catalog, artist):
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 def cmpArtworkByDateAcquired(artwork1, artwork2):
-    return (int(artwork1["Date"])<int(artwork2["Date"]))
+    if artwork1["Date"] == "" or artwork2["Date"] == "":
+        return 0
+    else:
+        return (int(artwork1["Date"])<int(artwork2["Date"]))
 
 # Funciones de ordenamiento
 def sortArtWork(catalog, size, sort_type):
-
-    start_time = time.process_time()
-
-    if sort_type == "shellsort":
-            sorted_list = sa.sort(sub_list, cmpArtworkByDateAcquired)
-    elif sort_type == "mergesort":
-            sorted_list = ml.sort(sub_list, cmpArtworkByDateAcquired)
-    elif sort_type == "insertionsort":
-            sorted_list = pq.sort(sub_list, cmpArtworkByDateAcquired)
-    elif sort_type == "quicksort":
-            sorted_list = rf.sort(sub_list, cmpArtworkByDateAcquired)
-
-    sub_list = lt.subList(sorted_list, 0, size)
     
+    if sort_type == "shell":
+            sorted_list = sa.sort(catalog['artworks'], cmpArtworkByDateAcquired)
+    elif sort_type == "merge":
+            sorted_list = ml.sort(catalog['artworks'], cmpArtworkByDateAcquired)
+    elif sort_type == "insertion":
+            sorted_list = pq.sort(catalog['artworks'], cmpArtworkByDateAcquired)
+    elif sort_type == "quick":
+            sorted_list = rf.sort(catalog['artworks'], cmpArtworkByDateAcquired)
+
+    sub_list = lt.subList(sorted_list, 1, size)
+    sub_list = sub_list.copy()
     return sorted_list
 #def sortArtworksDate(cronologicalad):
     #sa.sort(cronologicalad, comparedate)

@@ -43,11 +43,6 @@ def loadArtworks(catalog):
     for artwork in input_file:
         model.addArtwork(catalog, artwork)
 
-def sortartworksdate(catalog)
-
-
-
-
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """

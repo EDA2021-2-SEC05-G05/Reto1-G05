@@ -25,7 +25,7 @@ import sys
 import controller
 from DISClib.ADT import list as lt
 assert cf
-
+import time
 
 """
 La vista se encarga de la interacción con el usuario
@@ -40,12 +40,13 @@ def printMenu():
     print("2- Cargar adquisiciones por fecha de adquisición")
     print("0- Salir")
 
-def initCatalog():
-    return controller.initCatalog()
+def initCatalog(tipo):
+    return controller.initCatalog(tipo)
 
 
 def loadData(catalog):
     controller.loadData(catalog)
+
 
 catalog = None
 
@@ -57,13 +58,17 @@ while True:
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
         tipo = input("""Escriba ARRAY_LIST si desea una representación de
-                      tipo array_list o LINKED_LIST si desea de tipo linked_list""")
+                      tipo array_list o LINKED_LIST si desea de tipo linked_list: """)
         catalog = initCatalog(tipo)
         loadData(catalog)
     elif int(inputs[0]) == 2:
+        start_time = time.process_time()
         ext = input("Ingrese la cantidad de elementos que desea ver, no debe ser mayor a " + str(lt.size(catalog["artworks"])))
         sorttype = input("Escriba el tipo de algoritmo de ordenamiento que desea que se use para ordenar el catálogo de obras, estos son: insertion, shell, merge o quick")
-        
+        stop_time = time.process_time()
+        elapsed_time_mseg = round((stop_time - start_time), 2)
+        artworks = controller.sortArtWork(catalog, int(ext), sorttype)
+        printSortResults(artworks, int(ext))
     else:
         sys.exit(0)
 sys.exit(0)
