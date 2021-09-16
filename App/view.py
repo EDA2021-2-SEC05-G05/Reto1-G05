@@ -54,7 +54,7 @@ def printSortResults(artworks, sample=10):
         i=1
         while i <= sample:
             artwork = lt.getElement(artworks,i)
-            print('Titulo: ' + artwork['Title'] + ' Date: ' + artwork['Date'])
+            print('Titulo: ' + artwork['Title'] + ' Date Acquired: ' + artwork['DateAcquired'])
             i+=1
 catalog = None
 
@@ -74,7 +74,7 @@ while True:
         sorttype = input("Escriba el tipo de algoritmo de ordenamiento que desea que se use para ordenar el catálogo de obras, estos son: insertion, shell, merge o quick: ")
         artworks = controller.sortArtWork(catalog, int(ext), sorttype)
         print(lt.size(artworks[1]))
-        printSortResults(artworks[1], int(ext))
+        printSortResults(artworks[1])
     else:
         sys.exit(0)
 sys.exit(0)

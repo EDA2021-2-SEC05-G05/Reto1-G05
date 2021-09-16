@@ -77,10 +77,10 @@ def addArtist(catalog, artist):
 
 # Funciones utilizadas para comparar elementos dentro de una lista
 def cmpArtworkByDateAcquired(artwork1, artwork2):
-    if artwork1["Date"] == "" or artwork2["Date"] == "":
+    if artwork1["DateAcquired"] == "" or artwork2["DateAcquired"] == "":
         return 1
     else:
-        return (int(artwork1["Date"])<int(artwork2["Date"]))
+        return (artwork1["DateAcquired"]<artwork2["DateAcquired"])
 
 # Funciones de ordenamiento
 def sortArtWork(catalog, size, sort_type):
