@@ -73,7 +73,6 @@ while True:
         ext = input("Ingrese la cantidad de elementos que desea ver, no debe ser mayor a " + str(lt.size(catalog["artworks"])) +": ")
         sorttype = input("Escriba el tipo de algoritmo de ordenamiento que desea que se use para ordenar el catálogo de obras, estos son: insertion, shell, merge o quick: ")
         artworks = controller.sortArtWork(catalog, int(ext), sorttype)
-        print(lt.size(artworks[1]))
         printSortResults(artworks[1])
     else:
         sys.exit(0)
