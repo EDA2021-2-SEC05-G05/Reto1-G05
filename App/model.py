@@ -29,10 +29,13 @@ import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import mergesort as me
 assert cf
+import time
 """
 Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
 los mismos.
 """
+
+
 
 # Construccion de modelos
 
@@ -118,6 +121,10 @@ def cmpArtistByBD (artist1, artist2):
     return (artist1["BeginDate"]<artist2["BeginDate"])
 def cmpArtworkByDateAcquired(artwork1, artwork2):
     return (artwork1["DateAcquired"]<artwork2["DateAcquired"])
+
+def compareMedium( artwork1 , artwork2):
+    result = artwork1['Medium'] > artwork2['Medium']
+    return result
 
 # Funciones de ordenamiento
 def sortArtists(catalog):

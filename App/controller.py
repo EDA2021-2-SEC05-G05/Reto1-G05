@@ -65,6 +65,8 @@ def sortArtists(catalog):
 def sortArtWorks(catalog):
     model.sortArtWorks(catalog)
 
+
+
 # Funciones de consulta sobre el catálogo
 def getArtistsByBD (catalog, date0, datef):
     sortArtists(catalog)
