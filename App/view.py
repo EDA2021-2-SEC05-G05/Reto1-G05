@@ -117,10 +117,6 @@ def printNationalityList(dic):
     return dic
 catalog = None
 
-#def print_resultsReq2():
-
-
-#def print_resultsReq4():
 
 
 """
@@ -146,6 +142,8 @@ while True:
         print("El número total de obras dentro del rango es de: ", lt.size(r[0]))
         print("El número total de obras adquiridas por compra es de: ", r[1], "\n")
         printSortResults(r[0])
+
+    
     elif int(inputs[0]) == 5:
         print("Cargando clasificación... \n")
         artworksbyn = controller.ArtworksPerNationality(catalog)
