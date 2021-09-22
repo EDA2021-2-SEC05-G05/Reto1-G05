@@ -52,7 +52,7 @@ def initCatalog(tipo):
 def loadData(catalog):
     controller.loadData(catalog)
 
-def printSortResultsReq1(artworks, sample=10):
+def printSortResults(artworks, sample=10):
     size = lt.size(artworks)
     if size > sample:
         print("Las primeras ", sample, " obras ordenadas son:")
@@ -63,11 +63,12 @@ def printSortResultsReq1(artworks, sample=10):
             i+=1
 catalog = None
 
-def print_resultsReq2():
+#def print_resultsReq2():
 
 def print_resultsReq3():
 
-def print_resultsReq4():
+
+#def print_resultsReq4():
 
 """
 Menu principal
@@ -86,6 +87,9 @@ while True:
         artworks = controller.sortArtWork(catalog, int(ext), sorttype)
         printSortResults(artworks[1])
         print("Tiempo transcurrido: " + str(artworks[0]))
+
+    elif int(inputs[0]) == 2: # Print Requerimiento 2
+        
 
     elif int(inputs[0]) == 3: # Print Requerimiento 3
         tecnica = input('Ingrese la tecnica para la cual desea realizar la búsqueda: ')
