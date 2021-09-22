@@ -87,18 +87,8 @@ while True:
         artworks = controller.sortArtWork(catalog, int(ext), sorttype)
         printSortResults(artworks[1])
         print("Tiempo transcurrido: " + str(artworks[0]))
-
-    elif int(inputs[0]) == 2: # Print Requerimiento 2
         
 
-    elif int(inputs[0]) == 3: # Print Requerimiento 3
-        tecnica = input('Ingrese la tecnica para la cual desea realizar la búsqueda: ')
-        tecnica = tecnica.lower()
-        filtrado_tecnica = controller.filtrado_tecnica(catalog, tecnica)
-        result = controller.sortArtworkMedium(filtrado_tecnica)
-        Obras_tecnica = controller.trending_2(result[1])
-        print_resultsReq2(Obras_tecnica)
-        controller.limpieza(Obras_tecnica)
     else:
         sys.exit(0)
 sys.exit(0)

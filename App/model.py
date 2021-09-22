@@ -33,10 +33,7 @@ from DISClib.Algorithms.Sorting import insertionsort as pq
 from DISClib.Algorithms.Sorting import quicksort as rf
 assert cf
 import time
-"""
-Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
-los mismos.
-"""
+
 
 # Construccion de modelos
 
@@ -63,13 +60,7 @@ def addArtist(catalog, artist):
 
 # Funciones de consulta
 
-def filtrado_tecnica(catalog, tecnica):
 
-    lista_tecnica = lt.newList("ARRAY_LIST")
-    for addArtwork in lt.iterator(catalog['artworks']):
-        if addArtwork["Medium"] == tecnica:
-            lt.addLast(lista_tecnica, addArtwork)
-    return lista_tecnica 
 
 #def getCronologicalAd (catalog, date0, datef):
     #artworks = catalog["artworks"]
@@ -90,6 +81,10 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
     else:
         return (artwork1["DateAcquired"]<artwork2["DateAcquired"])
 
+def compareMedium( artwork1 , artwork2):
+    result = artwork1['Medium'] > artwork2['Medium']
+    return result
+
 # Funciones de ordenamiento
 def sortArtWork(catalog, size, sort_type):
     sub_list = lt.subList(catalog["artworks"], 1, size)
@@ -106,18 +101,7 @@ def sortArtWork(catalog, size, sort_type):
     stop_time = time.process_time()        
     elapsed_time_mseg = (stop_time - start_time)*1000
     return elapsed_time_mseg, sorted_list
-#def sortArtworksDate(cronologicalad):
-    #sa.sort(cronologicalad, comparedate)
+
 
 def sortArtworkMedium(catalog): #Req3
-
-    size = lt.size(catalog)
-    sub_list = lt.subList(catalog,0,size)
-    sub_list = sub_list.copy()
-    t1 = time.process_time()
-    sorted_list = mer.sort(sub_list, comparemedium)
-    t2 = time.process_time()
-    tiempo_ms = (t2-t1)*1000
-    sub_list = None
-    return (tiempo_ms, sorted_list)
 

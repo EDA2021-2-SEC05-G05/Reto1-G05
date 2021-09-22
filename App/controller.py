@@ -29,7 +29,8 @@ def initCatalog(tipo):
 
 def loadData(catalog):
     loadArtworks(catalog)
-    #loadArtists(catalog)
+
+#loadArtists(catalog)
 
 def loadArtists(catalog):
     artistsfile = cf.data_dir + 'MoMA/Artists-utf8.csv'
@@ -56,13 +57,9 @@ El controlador se encarga de mediar entre la vista y el modelo.
 def sortArtWork(catalog, size, sort_type):
     return model.sortArtWork(catalog, size, sort_type)
 
-def sortArtworkMedium(catalog):
-    return model.sortArtworkMedium(catalog)
+
 
 # Funciones de consulta sobre el catálogo
-
-def filtrado_tecnica(catalog, tecnica):
-    return model.filtrado_tecnica(catalog, tecnica)
 
 
 #def getCronologicalAd (catalog, date0, datef):
