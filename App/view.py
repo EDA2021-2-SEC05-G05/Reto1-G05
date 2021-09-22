@@ -40,25 +40,81 @@ operación solicitada
 def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
-    print("2- Cargar adquisiciones por fecha de adquisición")
+    print("2- Cargar artistas por fecha de nacimiento")
+    print("3- Cargar adquisiciones por fecha de adquisición")
+    print("4- Clasificar obras de un artista por técnica")
+    print("5- Clasificar las obras por la nacionalidad de sus autores")
+    print("6- Costo de transportar obras de un departamento")
     print("0- Salir")
 
-def initCatalog(tipo):
-    return controller.initCatalog(tipo)
+def initCatalog():
+    return controller.initCatalog()
 
 
 def loadData(catalog):
     controller.loadData(catalog)
 
-def printSortResults(artworks, sample=10):
+def printArtistsResults(artists):
+    size = lt.size(artists)
+    if size < 6:
+        print("La muestra es muy pequeña")
+    else:
+        primeros = 1
+        ultimos = 2
+        while primeros <= 3:
+            artist = lt.getElement(artists, primeros)
+            primeros+=1
+            print('Nombre: ' + artist['DisplayName'] + " | Fecha de nacimiento: " + artist["BeginDate"] + ' | Fecha de fallecimiento: ' + controller.checkED(artist['EndDate']) + " | Nacionalidad: "+ controller.checkSTR(artist['Nationality']) + " | Genero: " + controller.checkSTR(artist['Gender'])+"\n")
+        print(("-\n")*3)
+        while ultimos >=0:
+            artist = lt.getElement(artists, (lt.size(artists)-ultimos))
+            print('Nombre: ' + artist['DisplayName'] + " | Fecha de nacimiento: " + artist["BeginDate"] + ' | Fecha de fallecimiento: ' + controller.checkED(artist['EndDate']) + " | Nacionalidad: "+ controller.checkSTR(artist['Nationality']) + " | Genero: " + controller.checkSTR(artist['Gender'])+"\n")
+            ultimos-=1
+
+def printSortResults(artworks):
     size = lt.size(artworks)
-    if size > sample:
-        print("Las primeras ", sample, " obras ordenadas son:")
-        i=1
-        while i <= sample:
-            artwork = lt.getElement(artworks,i)
-            print('Titulo: ' + artwork['Title'] + ' Date Acquired: ' + artwork['DateAcquired'])
-            i+=1
+    if size < 6:
+        print("La muestra es muy pequeña")
+    else:
+        primeros = 1
+        ultimos = 2
+        while primeros <= 3:
+            artwork = lt.getElement(artworks, primeros)
+            artists = controller.getArtists(catalog, artwork)
+            strartists = controller.checkArtists(artists)
+            primeros+=1
+            print('Titulo: ' + artwork['Title'] + " | Artista(s): " + strartists + ' | Date Acquired: ' + artwork['DateAcquired'] + " | Medium: "+ controller.checkSTR(artwork['Medium']) + " | Dimensions: " + controller.checkSTR(artwork['Dimensions'])+"\n")
+        print(("-\n")*3)
+        while ultimos >=0:
+            artwork = lt.getElement(artworks, (lt.size(artworks)-ultimos))
+            artists = controller.getArtists(catalog, artwork)
+            strartists = controller.checkArtists(artists)
+            print('Titulo: ' + artwork['Title'] + " | Artista(s): " + strartists + ' | Date Acquired: ' + artwork['DateAcquired'] + " | Medium: "+ controller.checkSTR(artwork['Medium']) + " | Dimensions: " + controller.checkSTR(artwork['Dimensions'])+"\n")
+            ultimos-=1
+def printDicResults(artworks):
+    size = lt.size(artworks)
+    if size < 6:
+        print("La muestra es muy pequeña")
+    else:
+        primeros = 1
+        ultimos = 2
+        while primeros <= 3:
+            artwork = lt.getElement(artworks, primeros)
+            artists = controller.getArtists(catalog, artwork)
+            strartists = controller.checkArtists(artists)
+            primeros+=1
+            print('Titulo: ' + artwork['Title'] + " | Artista(s): " + strartists + ' | Date: ' + controller.checkSTR(artwork['Date']) + " | Medium: "+ controller.checkSTR(artwork['Medium']) + " | Dimensions: " + controller.checkSTR(artwork['Dimensions'])+"\n")
+        print(("-\n")*3)
+        while ultimos >=0:
+            artwork = lt.getElement(artworks, (lt.size(artworks)-ultimos))
+            artists = controller.getArtists(catalog, artwork)
+            strartists = controller.checkArtists(artists)
+            print('Titulo: ' + artwork['Title'] + " | Artista(s): " + strartists + ' | Date: ' + controller.checkSTR(artwork['Date']) + " | Medium: "+ controller.checkSTR(artwork['Medium']) + " | Dimensions: " + controller.checkSTR(artwork['Dimensions'])+"\n")
+            ultimos-=1
+def printNationalityList(dic):
+    for i in dic:
+        print(i, ": ", dic[i], "\n")
+    return dic
 catalog = None
 
 """
@@ -68,16 +124,33 @@ while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
     if int(inputs[0]) == 1:
-        tipo = input("""Escriba ARRAY_LIST si desea una representación de
-                      tipo array_list o LINKED_LIST si desea de tipo linked_list: """)
-        catalog = initCatalog(tipo)
+        catalog = initCatalog()
         loadData(catalog)
     elif int(inputs[0]) == 2:
-        ext = input("Ingrese la cantidad de elementos que desea ver, no debe ser mayor a " + str(lt.size(catalog["artworks"])) +": ")
-        sorttype = input("Escriba el tipo de algoritmo de ordenamiento que desea que se use para ordenar el catálogo de obras, estos son: insertion, shell, merge o quick: ")
-        artworks = controller.sortArtWork(catalog, int(ext), sorttype)
-        printSortResults(artworks[1])
-        print("Tiempo transcurrido: " + str(artworks[0]))
+        date0 = input("Ingrese la fecha inicial en formato YYYY: ")
+        datef = input("Ingrese la fecha final en formato YYYY: ")
+        artistlt = controller.getArtistsByBD(catalog, date0, datef)
+        print("El número total de autores dentro del rango es de: ", lt.size(artistlt), "\n")
+        printArtistsResults(artistlt)
+    elif int(inputs[0]) == 3:
+        date0 = input("Ingrese la fecha inicial en formato YYYY-MM-DD: ")
+        datef = input("Ingrese la fecha final en formato YYYY-MM-DD: ")
+        r = controller.getArtworksByDA(catalog, date0, datef)
+        print("El número total de obras dentro del rango es de: ", lt.size(r[0]))
+        print("El número total de obras adquiridas por compra es de: ", r[1], "\n")
+        printSortResults(r[0])
+    elif int(inputs[0]) == 5:
+        print("Cargando clasificación... \n")
+        artworksbyn = controller.ArtworksPerNationality(catalog)
+        dic = controller.sortDic(artworksbyn)
+        printNationalityList(dic)
+        first = next(iter(dic))
+        list = controller.checkartworks(artworksbyn[first])
+        printDicResults(list)
+    elif int(inputs[0]) == 6:
+        depa = input("Ingrese el departamento que desea investigar: ")
+        l = controller.DepartmentCost(depa, catalog)
+
     else:
         sys.exit(0)
 sys.exit(0)
