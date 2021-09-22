@@ -63,6 +63,14 @@ def addArtist(catalog, artist):
 
 # Funciones de consulta
 
+def filtrado_tecnica(catalog, tecnica):
+
+    lista_tecnica = lt.newList("ARRAY_LIST")
+    for addArtwork in lt.iterator(catalog['artworks']):
+        if addArtwork["Medium"] == tecnica:
+            lt.addLast(lista_tecnica, addArtwork)
+    return lista_tecnica 
+
 #def getCronologicalAd (catalog, date0, datef):
     #artworks = catalog["artworks"]
     #cronologicalad = lt.newList()
@@ -100,4 +108,16 @@ def sortArtWork(catalog, size, sort_type):
     return elapsed_time_mseg, sorted_list
 #def sortArtworksDate(cronologicalad):
     #sa.sort(cronologicalad, comparedate)
+
+def sortArtworkMedium(catalog): #Req3
+
+    size = lt.size(catalog)
+    sub_list = lt.subList(catalog,0,size)
+    sub_list = sub_list.copy()
+    t1 = time.process_time()
+    sorted_list = mer.sort(sub_list, comparemedium)
+    t2 = time.process_time()
+    tiempo_ms = (t2-t1)*1000
+    sub_list = None
+    return (tiempo_ms, sorted_list)
 

@@ -41,6 +41,8 @@ def printMenu():
     print("Bienvenido")
     print("1- Cargar información en el catálogo")
     print("2- Cargar adquisiciones por fecha de adquisición")
+    print("3- Cargar las obras de un artista por técnica ")
+    print("4- Cargar las obras por la nacionalidad de sus creadores")
     print("0- Salir")
 
 def initCatalog(tipo):
@@ -50,7 +52,7 @@ def initCatalog(tipo):
 def loadData(catalog):
     controller.loadData(catalog)
 
-def printSortResults(artworks, sample=10):
+def printSortResultsReq1(artworks, sample=10):
     size = lt.size(artworks)
     if size > sample:
         print("Las primeras ", sample, " obras ordenadas son:")
@@ -60,6 +62,12 @@ def printSortResults(artworks, sample=10):
             print('Titulo: ' + artwork['Title'] + ' Date Acquired: ' + artwork['DateAcquired'])
             i+=1
 catalog = None
+
+def print_resultsReq2():
+
+def print_resultsReq3():
+
+def print_resultsReq4():
 
 """
 Menu principal
@@ -72,12 +80,21 @@ while True:
                       tipo array_list o LINKED_LIST si desea de tipo linked_list: """)
         catalog = initCatalog(tipo)
         loadData(catalog)
-    elif int(inputs[0]) == 2:
+    elif int(inputs[0]) == 2: # Print Requerimiento 1 
         ext = input("Ingrese la cantidad de elementos que desea ver, no debe ser mayor a " + str(lt.size(catalog["artworks"])) +": ")
         sorttype = input("Escriba el tipo de algoritmo de ordenamiento que desea que se use para ordenar el catálogo de obras, estos son: insertion, shell, merge o quick: ")
         artworks = controller.sortArtWork(catalog, int(ext), sorttype)
         printSortResults(artworks[1])
         print("Tiempo transcurrido: " + str(artworks[0]))
+
+    elif int(inputs[0]) == 3: # Print Requerimiento 3
+        tecnica = input('Ingrese la tecnica para la cual desea realizar la búsqueda: ')
+        tecnica = tecnica.lower()
+        filtrado_tecnica = controller.filtrado_tecnica(catalog, tecnica)
+        result = controller.sortArtworkMedium(filtrado_tecnica)
+        Obras_tecnica = controller.trending_2(result[1])
+        print_resultsReq2(Obras_tecnica)
+        controller.limpieza(Obras_tecnica)
     else:
         sys.exit(0)
 sys.exit(0)
