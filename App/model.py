@@ -102,6 +102,3 @@ def sortArtWork(catalog, size, sort_type):
     elapsed_time_mseg = (stop_time - start_time)*1000
     return elapsed_time_mseg, sorted_list
 
-
-def sortArtworkMedium(catalog): #Req3
-

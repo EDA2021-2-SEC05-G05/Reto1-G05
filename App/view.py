@@ -65,14 +65,14 @@ catalog = None
 
 #def print_resultsReq2():
 
-def print_resultsReq3():
-
 
 #def print_resultsReq4():
+
 
 """
 Menu principal
 """
+
 while True:
     printMenu()
     inputs = input('Seleccione una opción para continuar\n')
