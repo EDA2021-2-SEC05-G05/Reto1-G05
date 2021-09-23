@@ -72,6 +72,11 @@ def sortCost(list):
     return model.sortArtWorksCost(list)
 
 
+def sortArtists(catalog):
+    model.sortArtists(catalog)
+
+def sortArtWorks(catalog):
+    model.sortArtWorks(catalog)
 
 # Funciones de consulta sobre el catálogo
 def getArtistsByBD (catalog, date0, datef):
@@ -99,3 +104,6 @@ def checkartworks(artworks):
     return model.checkartworks(artworks)
 def DepartmentCost(depa, catalog):
     return model.DepartmentCost(depa, catalog)
+
+def tecniqueByArtist(catalog, artistName):
+    return model.tecniqueByArtist(catalog, artistName)
