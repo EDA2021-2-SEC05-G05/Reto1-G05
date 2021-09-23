@@ -29,10 +29,13 @@ import config as cf
 from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import mergesort as me
 assert cf
+import time
 """
 Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
 los mismos.
 """
+
+
 
 # Construccion de modelos
 
@@ -54,6 +57,73 @@ def addArtist(catalog, artist):
     lt.addLast(catalog['artists'], artist)
 
 # Funciones para creacion de datos
+def tecniqueByArtist(catalog, artistName):
+    total_obras = 0
+    contadorInicialTec = 0
+    nombreTecnique = ""
+    respuesta = {}
+
+    artistId = getIdOfArtist(catalog, artistName)
+    listOfMediums = []
+    if artistId != None:
+        for artwork in lt.iterator(catalog["artworks"]):
+            if artistId in artwork['ConstituentID']:
+                total_obras += 1
+                if not artwork['Medium'] in listOfMediums:
+                    listOfMediums.append(artwork['Medium'])
+                
+    for tecnique in range(len(listOfMediums)):
+        contadorTecnique = getCountArtworksByTecnique(catalog, artistId, listOfMediums[tecnique])
+        if contadorTecnique > contadorInicialTec:
+            contadorInicialTec = contadorTecnique
+            nombreTecnique = listOfMediums[tecnique]
+
+    respuesta['Total obras'] = total_obras
+    respuesta['Total tecnicas'] = len(listOfMediums)
+    respuesta['Tecnica mas utilizada'] = nombreTecnique
+    respuesta['Listado'] = getArtworkByTecnique(catalog, artistId, nombreTecnique)
+    return respuesta
+
+def getArtworkByTecnique(catalog, artistId, tecniqueName):
+    final_list = []
+    if artistId != None:
+        for artwork in lt.iterator(catalog["artworks"]):
+            if artistId in artwork['ConstituentID']:
+                if artwork['Medium'] == tecniqueName:
+                    final_dict = {}
+
+                    tittle = artwork['Title']
+                    date  = artwork['Date']
+                    medio = artwork['Medium']
+                    dimensiones = artwork['Dimensions']
+
+                    final_dict['Titulo'] = tittle
+                    final_dict['Fecha'] = date
+                    final_dict['Tecnica'] = medio
+                    final_dict['Dimensiones'] = dimensiones
+
+                    final_list.append(final_dict)
+
+    return final_list
+
+
+def getCountArtworksByTecnique(catalog, artistId, tecniqueName):
+    contador = 0
+    if artistId != None:
+        for artwork in lt.iterator(catalog["artworks"]):
+            if artistId in artwork['ConstituentID']:
+                if artwork['Medium'] == tecniqueName:
+                    contador += 1
+    return contador
+
+def getIdOfArtist(catalog, artistName):
+    artistId = None
+    for artist in lt.iterator(catalog["artists"]):
+        if artist['DisplayName'] == artistName:
+            artistId = artist['ConstituentID']
+    return artistId
+
+
 
 def ArtworksPerNationality (catalog):
     artists = catalog["artists"]
@@ -112,15 +182,16 @@ def getArtists (catalog, artwork):
             lt.addLast(artists, artist["DisplayName"])
     return artists
 
-def DepartmentCost(depa, catalog):
-    list = artworksbydepa(depa, catalog)
-    for n in lt.iterator(list):
-        if 
+
 # Funciones utilizadas para comparar elementos dentro de una lista
 def cmpArtistByBD (artist1, artist2):
     return (artist1["BeginDate"]<artist2["BeginDate"])
 def cmpArtworkByDateAcquired(artwork1, artwork2):
     return (artwork1["DateAcquired"]<artwork2["DateAcquired"])
+
+def compareMedium( artwork1 , artwork2):
+    result = artwork1['Medium'] > artwork2['Medium']
+    return result
 
 # Funciones de ordenamiento
 def sortArtists(catalog):
