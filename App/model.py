@@ -27,12 +27,8 @@
 
 import config as cf
 from DISClib.ADT import list as lt
-from DISClib.Algorithms.Sorting import shellsort as sa
-from DISClib.Algorithms.Sorting import mergesort as ml
-from DISClib.Algorithms.Sorting import insertionsort as pq
-from DISClib.Algorithms.Sorting import quicksort as rf
+from DISClib.Algorithms.Sorting import mergesort as me
 assert cf
-import time
 """
 Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
 los mismos.
@@ -40,11 +36,11 @@ los mismos.
 
 # Construccion de modelos
 
-def newCatalog(tipo):
+def newCatalog():
     catalog = {'artworks': None,
                'artists': None}
 
-    catalog['artworks'] = lt.newList(tipo, cmpfunction=cmpArtworkByDateAcquired)
+    catalog['artworks'] = lt.newList()
     catalog['artists'] = lt.newList()
 
     return catalog
@@ -59,45 +55,131 @@ def addArtist(catalog, artist):
 
 # Funciones para creacion de datos
 
+def ArtworksPerNationality (catalog):
+    artists = catalog["artists"]
+    artworksbyn = {}
+    for artwork in lt.iterator(catalog["artworks"]):
+        id = artwork["ConstituentID"]
+        for artist in lt.iterator(artists):
+            if artist["ConstituentID"] in id:
+                if artist["Nationality"] == "":
+                    artist["Nationality"] = "Unknown"
+                if artist["Nationality"] not in artworksbyn:
+                    aw = lt.newList()
+                    artworksbyn[artist["Nationality"]] = aw
+                    lt.addLast(artworksbyn[artist["Nationality"]], artwork)
+                else:
+                    lt.addLast(artworksbyn[artist["Nationality"]], artwork)
+    return artworksbyn
 
 
 # Funciones de consulta
 
-#def getCronologicalAd (catalog, date0, datef):
-    #artworks = catalog["artworks"]
-    #cronologicalad = lt.newList()
-    #for i in range(1, (lt.size(artworks))):
-        #artwork = lt.getElement(artworks, i)
-        #date = artwork["Date"]
-        #if date != "Unknown" or date != "n.d.":    
-            #if date >= date0 and date <= datef:
-                #lt.addLast(cronologicalad, artwork)
-    
-    #return cronologicalad
+def getArtistsByBD (catalog, date0, datef):
+    artists = catalog["artists"]
+    artistsbyBG = lt.newList()
+    for n in range(1, lt.size(artists)):
+        artist = lt.getElement(artists, n)
+        if artist["BeginDate"] != "0":
+            if artist["BeginDate"]>=date0:
+                if artist["BeginDate"]<=datef:
+                    lt.addLast(artistsbyBG, artist)
+                else:
+                    return artistsbyBG
+    return artistsbyBG
+def getArtworksByDA (catalog, date0, datef):
+    artworks = catalog["artworks"]
+    artworksbyDA = lt.newList()
+    purchased = 0
+    for n in range(1, lt.size(artworks)):
+        artwork = lt.getElement(artworks, n)
+        if artwork["DateAcquired"] != "":
+            if artwork["DateAcquired"]>=date0:
+                if artwork["DateAcquired"]<= datef:
+                    lt.addLast(artworksbyDA, artwork)
+                    if "Purchase" in artwork["CreditLine"] or "Purchased" in artwork["CreditLine"]:
+                        purchased += 1
+                else:
+                    return artworksbyDA, purchased
+    return artworksbyDA, purchased
 
+def getArtists (catalog, artwork):
+    id = artwork["ConstituentID"]
+    artists = lt.newList()
+    for i in range(1, lt.size(catalog["artists"])):
+        artist = lt.getElement(catalog["artists"], i)
+        if artist["ConstituentID"] in id:
+            lt.addLast(artists, artist["DisplayName"])
+    return artists
+
+def DepartmentCost(depa, catalog):
+    list = artworksbydepa(depa, catalog)
+    for n in lt.iterator(list):
+        if 
 # Funciones utilizadas para comparar elementos dentro de una lista
+def cmpArtistByBD (artist1, artist2):
+    return (artist1["BeginDate"]<artist2["BeginDate"])
 def cmpArtworkByDateAcquired(artwork1, artwork2):
-    if artwork1["DateAcquired"] == "" or artwork2["DateAcquired"] == "":
-        return 1
-    else:
-        return (artwork1["DateAcquired"]<artwork2["DateAcquired"])
+    return (artwork1["DateAcquired"]<artwork2["DateAcquired"])
 
 # Funciones de ordenamiento
-def sortArtWork(catalog, size, sort_type):
-    sub_list = lt.subList(catalog["artworks"], 1, size)
-    sub_list = sub_list.copy()   
-    start_time = time.process_time() 
-    if sort_type == "shell":
-            sorted_list = sa.sort(sub_list, cmpArtworkByDateAcquired)
-    elif sort_type == "merge":
-            sorted_list = ml.sort(sub_list, cmpArtworkByDateAcquired)
-    elif sort_type == "insertion":
-            sorted_list = pq.sort(sub_list, cmpArtworkByDateAcquired)
-    elif sort_type == "quick":
-            sorted_list = rf.sort(sub_list, cmpArtworkByDateAcquired)
-    stop_time = time.process_time()        
-    elapsed_time_mseg = (stop_time - start_time)*1000
-    return elapsed_time_mseg, sorted_list
-#def sortArtworksDate(cronologicalad):
-    #sa.sort(cronologicalad, comparedate)
+def sortArtists(catalog):
+    me.sort(catalog["artists"], cmpArtistByBD)
+def sortArtWorks(catalog):
+    me.sort(catalog["artworks"], cmpArtworkByDateAcquired)
 
+def checkID (id):
+    id = id[1:-1]
+    id = id.split(",")
+    return id
+
+def checkArtists (artists):
+    strartists = lt.getElement(artists, 1)
+    if lt.size(artists) >= 2:
+                i = 2
+                while i <= lt.size(artists):
+                    strartists = strartists + ", "+ lt.getElement (artists, i)
+                    i += 1
+    return strartists
+
+def checkSTR(str):
+    if str == "":
+        str = "Unknown"
+    return str
+
+def checkED(ed):
+    if ed == "0":
+        ed = "Aún vivo"
+    return ed
+def sortDic(dic):
+    b = {}
+    for i in dic:
+        b[i] = lt.size(dic[i])
+    dic = dict(sorted(b.items(), key=lambda x: x[1], reverse=True)[:10])
+    return dic
+def checkartwork (list, artwork):
+    title = artwork["Title"]
+    for n in lt.iterator(list):
+        if n['Title'] == title:
+            return True
+def checkartworks(artworks):
+    i = 1
+    unique = lt.newList()
+    while i < lt.size(artworks):
+        aw = lt.getElement(artworks, i)
+        if i == lt.size(artworks):
+            lt.addLast(unique, aw)
+            return unique
+        else:
+            nextaw = lt.getElement(artworks, i+1)
+            if aw["Title"] != nextaw["Title"]:
+                lt.addLast(unique, aw)
+        i +=1
+    return unique
+
+def artworksbydepa (depa, catalog):
+    list = lt.newList()
+    for n in lt.iterator(catalog["artworks"]):
+        if n["Department"] == depa:
+            lt.addLast(list, n)
+    return list
