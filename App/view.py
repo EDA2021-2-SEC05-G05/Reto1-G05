@@ -26,6 +26,7 @@ import controller
 from DISClib.ADT import list as lt
 assert cf
 import sys
+import time
 
 default_limit = 1000
 sys.setrecursionlimit(default_limit*10)
@@ -142,28 +143,39 @@ while True:
         catalog = initCatalog()
         loadData(catalog)
     elif int(inputs[0]) == 2:
+        start_time = time.process_time()
         date0 = input("Ingrese la fecha inicial en formato YYYY: ")
         datef = input("Ingrese la fecha final en formato YYYY: ")
         artistlt = controller.getArtistsByBD(catalog, date0, datef)
         print("El número total de autores dentro del rango es de: ", lt.size(artistlt), "\n")
         printArtistsResults(artistlt)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print(elapsed_time_mseg)
     elif int(inputs[0]) == 3:
+        start_time = time.process_time()
         date0 = input("Ingrese la fecha inicial en formato YYYY-MM-DD: ")
         datef = input("Ingrese la fecha final en formato YYYY-MM-DD: ")
         r = controller.getArtworksByDA(catalog, date0, datef)
         print("El número total de obras dentro del rango es de: ", lt.size(r[0]))
         print("El número total de obras adquiridas por compra es de: ", r[1], "\n")
         printSortResults(r[0])
-
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print(elapsed_time_mseg)
     elif int(inputs[0]) == 4:
+        start_time = time.process_time()
         artistName = input("Ingrese el nombre del artista: ")
         answer = controller.tecniqueByArtist(catalog, artistName)
         print("Total Obras: " + str(answer["Total obras"]))
         print("Total Tecnicas: " + str(answer["Total tecnicas"]))
         print("Tecnica más utilizada: " + str(answer["Tecnica mas utilizada"]))
         print("El listado de las obras de dicha técnica: " + str(answer["Listado"]))
-
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)
+        print(elapsed_time_mseg)
     elif int(inputs[0]) == 5:
+        start_time = time.process_time()
         print("Cargando clasificación... \n")
         artworksbyn = controller.ArtworksPerNationality(catalog)
         dic = controller.sortDic(artworksbyn)
@@ -171,7 +183,11 @@ while True:
         first = next(iter(dic))
         list = controller.checkartworks(artworksbyn[first])
         printDicResults(list)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print(elapsed_time_mseg)
     elif int(inputs[0]) == 6:
+        start_time = time.process_time()
         depa = input("Ingrese el departamento que desea investigar: "+"\n")
         l = controller.DepartmentCost(depa, catalog)
         antlist = controller.sortD(l)
@@ -180,6 +196,9 @@ while True:
         coslist = controller.sortCost(l)
         print("Las 5 obras más costosas de mover: "+"\n")
         printDimensionsList(coslist)
+        stop_time = time.process_time()
+        elapsed_time_mseg = (stop_time - start_time)*1000
+        print(elapsed_time_mseg)
     else:
         sys.exit(0)
 sys.exit(0)
