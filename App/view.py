@@ -86,7 +86,7 @@ def printSortResults(artworks):
             print('Titulo: ' + artwork['Title'] + " | Artista(s): " + strartists + ' | Date Acquired: ' + artwork['DateAcquired'] + " | Medium: "+ controller.checkSTR(artwork['Medium']) + " | Dimensions: " + controller.checkSTR(artwork['Dimensions'])+"\n")
         print(("-\n")*3)
         while ultimos >=0:
-            artwork = lt.getElement(artworks, (lt.size(artworks)-ultimos))
+            artwork = lt.getElement(artworks, (size-ultimos))
             artists = controller.getArtists(catalog, artwork)
             strartists = controller.checkArtists(artists)
             print('Titulo: ' + artwork['Title'] + " | Artista(s): " + strartists + ' | Date Acquired: ' + artwork['DateAcquired'] + " | Medium: "+ controller.checkSTR(artwork['Medium']) + " | Dimensions: " + controller.checkSTR(artwork['Dimensions'])+"\n")
@@ -106,7 +106,7 @@ def printDicResults(artworks):
             print('Titulo: ' + artwork['Title'] + " | Artista(s): " + strartists + ' | Date: ' + controller.checkSTR(artwork['Date']) + " | Medium: "+ controller.checkSTR(artwork['Medium']) + " | Dimensions: " + controller.checkSTR(artwork['Dimensions'])+"\n")
         print(("-\n")*3)
         while ultimos >=0:
-            artwork = lt.getElement(artworks, (lt.size(artworks)-ultimos))
+            artwork = lt.getElement(artworks, (size-ultimos))
             artists = controller.getArtists(catalog, artwork)
             strartists = controller.checkArtists(artists)
             print('Titulo: ' + artwork['Title'] + " | Artista(s): " + strartists + ' | Date: ' + controller.checkSTR(artwork['Date']) + " | Medium: "+ controller.checkSTR(artwork['Medium']) + " | Dimensions: " + controller.checkSTR(artwork['Dimensions'])+"\n")
@@ -115,12 +115,20 @@ def printNationalityList(dic):
     for i in dic:
         print(i, ": ", dic[i], "\n")
     return dic
+def printDimensionsList(list):
+    size = lt.size(list)
+    if size < 6:
+        print("La muestra es muy pequeña")
+    else:
+        ultimos = 1
+        while ultimos <=5:
+            artwork = lt.getElement(list, ultimos)
+            artists = controller.getArtists(catalog, artwork)
+            strartists = controller.checkArtists(artists)
+            ultimos+=1
+            print('Titulo: ' + artwork['Title'] + " | Artista(s): " + strartists + ' | Classification: ' + controller.checkSTR(artwork['Classification']) + ' | Date: ' + controller.checkSTR(artwork['Date']) + " | Medium: "+ controller.checkSTR(artwork['Medium']) + " | Dimensions: " + controller.checkSTR(artwork['Dimensions'])+ " | TransCost(USD): " + str(artwork['TransCost(USD)'])+"\n")
+
 catalog = None
-
-#def print_resultsReq2():
-
-
-#def print_resultsReq4():
 
 
 """
@@ -155,9 +163,14 @@ while True:
         list = controller.checkartworks(artworksbyn[first])
         printDicResults(list)
     elif int(inputs[0]) == 6:
-        depa = input("Ingrese el departamento que desea investigar: ")
+        depa = input("Ingrese el departamento que desea investigar: "+"\n")
         l = controller.DepartmentCost(depa, catalog)
-
+        antlist = controller.sortD(l)
+        print("Las 5 obras más antiguas: "+"\n")
+        printDimensionsList(antlist)
+        coslist = controller.sortCost(l)
+        print("Las 5 obras más costosas de mover: "+"\n")
+        printDimensionsList(coslist)
     else:
         sys.exit(0)
 sys.exit(0)

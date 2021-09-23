@@ -30,6 +30,7 @@ from DISClib.ADT import list as lt
 from DISClib.Algorithms.Sorting import mergesort as me
 assert cf
 import time
+import math
 """
 Se define la estructura de un catálogo de videos. El catálogo tendrá dos listas, una para los videos, otra para las categorias de
 los mismos.
@@ -63,6 +64,9 @@ def ArtworksPerNationality (catalog):
     artworksbyn = {}
     for artwork in lt.iterator(catalog["artworks"]):
         id = artwork["ConstituentID"]
+        id = id[1:-1]
+        id = id.replace(" ", "")
+        id = id.split(",")
         for artist in lt.iterator(artists):
             if artist["ConstituentID"] in id:
                 if artist["Nationality"] == "":
@@ -73,6 +77,7 @@ def ArtworksPerNationality (catalog):
                     lt.addLast(artworksbyn[artist["Nationality"]], artwork)
                 else:
                     lt.addLast(artworksbyn[artist["Nationality"]], artwork)
+                continue
     return artworksbyn
 
 
@@ -108,19 +113,64 @@ def getArtworksByDA (catalog, date0, datef):
 
 def getArtists (catalog, artwork):
     id = artwork["ConstituentID"]
+    id = id[1:-1]
+    id = id.replace(" ", "")
+    id = id.split(",")
     artists = lt.newList()
     for i in range(1, lt.size(catalog["artists"])):
         artist = lt.getElement(catalog["artists"], i)
         if artist["ConstituentID"] in id:
             lt.addLast(artists, artist["DisplayName"])
+            continue
     return artists
 
+def DepartmentCost(depa, catalog):
+    list = artworksbydepa(depa, catalog)
+    for artwork in lt.iterator(list):
+        r = checkDimensions(artwork)
+        cost = r[0]
+        dlist = r[1]
+        if lt.size(dlist) == 2:
+            pri = lt.getElement(dlist, 1)
+            seg = lt.getElement(dlist, 2)
+            a = (pri/100) * (seg/100)
+            a = 72.00*a
+        elif lt.size(dlist) ==3:
+            pri = lt.getElement(dlist, 1)
+            seg = lt.getElement(dlist, 2)
+            ter = lt.getElement(dlist, 3)
+            a = (pri/100) * (seg/100)* (ter/100)
+            a = 72.00*a
+        else: 
+            a = 48.00
+        if a > cost:
+            cost =a
+        if artwork["Weight (kg)"] != "0" and artwork["Weight (kg)"] != "":
+            if "." in artwork["Weight (kg)"]:
+                w = float(artwork["Weight (kg)"])
+            else: 
+                w = int(artwork["Weight (kg)"])
+            w = w*72.00
+            cost+=w
+        cost = round(cost, 2)
+        artwork["TransCost(USD)"] = cost
+    return list
 
+def getArtworksByDate (list):
+    artworksbyDate = lt.newList()
+    for artwork in lt.iterator(list):
+        if artwork["Date"] != "":
+            lt.addLast(artworksbyDate, artwork)
+    return artworksbyDate  
 # Funciones utilizadas para comparar elementos dentro de una lista
 def cmpArtistByBD (artist1, artist2):
     return (artist1["BeginDate"]<artist2["BeginDate"])
 def cmpArtworkByDateAcquired(artwork1, artwork2):
     return (artwork1["DateAcquired"]<artwork2["DateAcquired"])
+def cmpArtworkByDate(artwork1, artwork2):
+    return (artwork1["Date"]<artwork2["Date"])
+def cmpArtworkByCost(artwork1, artwork2):
+    return (artwork1["TransCost(USD)"]>artwork2["TransCost(USD)"])
 
 def compareMedium( artwork1 , artwork2):
     result = artwork1['Medium'] > artwork2['Medium']
@@ -131,6 +181,10 @@ def sortArtists(catalog):
     me.sort(catalog["artists"], cmpArtistByBD)
 def sortArtWorks(catalog):
     me.sort(catalog["artworks"], cmpArtworkByDateAcquired)
+def sortArtWorksD(list):
+    return me.sort(list, cmpArtworkByDate)
+def sortArtWorksCost(list):
+    return me.sort(list, cmpArtworkByCost)
 
 def checkID (id):
     id = id[1:-1]
@@ -187,3 +241,59 @@ def artworksbydepa (depa, catalog):
         if n["Department"] == depa:
             lt.addLast(list, n)
     return list
+def checkDimensions (artwork):
+    height = artwork["Height (cm)"]
+    width = artwork["Height (cm)"]
+    depth = artwork["Depth (cm)"]
+    diameter = artwork["Diameter (cm)"]
+    lenght = artwork["Length (cm)"]
+    circumference = artwork["Circumference (cm)"]
+    cost = 0
+    dimensions = lt.newList()
+    if diameter != "0" and diameter != "":
+        if circumference != "":
+            if depth != "" and depth != "0":
+                d = float(diameter)/100
+                de = float(depth)/100
+                cost = 2*math.pi*((float(d))/2)*(float(de)+((float(d))/2))
+                cost = 72.00*cost
+            if height != "" and height != "0":
+                d = float(diameter)/100
+                de = float(height)/100
+                cost = 2*math.pi*((float(d))/2)*(float(de)+((float(d))/2))
+                cost = 72.00*cost
+            if lenght != "" and lenght != "0":
+                d = float(diameter)/100
+                de = float(lenght)/100
+                cost = 2*math.pi*((float(d))/2)*(float(de)+((float(d))/2))
+                cost = 72.00*cost
+    if height !="" and height !="0":
+        if "." in height:
+            w = float(height)
+        else: 
+            w = int(height)
+        lt.addLast(dimensions, w)
+        
+    if width != "" and width!="0":
+        if "." in width:
+            w = float(width)
+        else: 
+            w = int(width)
+        lt.addLast(dimensions, w)
+    if lenght != "" and lenght!="0":
+        if "." in lenght:
+            w = float(lenght)
+        else: 
+            w = int(lenght)
+        lt.addLast(dimensions, w)
+    if depth != "" and depth!="0":
+        if "." in depth:
+            w = float(depth)
+        else: 
+            w = int(depth)
+        lt.addLast(dimensions, w)
+    return cost, dimensions
+
+
+    
+        

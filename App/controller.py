@@ -65,6 +65,12 @@ def sortArtists(catalog):
 def sortArtWorks(catalog):
     model.sortArtWorks(catalog)
 
+def sortD(list):
+    list = model.getArtworksByDate(list)
+    return model.sortArtWorksD(list)
+def sortCost(list):
+    return model.sortArtWorksCost(list)
+
 
 
 # Funciones de consulta sobre el catálogo
