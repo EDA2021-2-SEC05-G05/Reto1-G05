@@ -143,7 +143,14 @@ while True:
         print("El número total de obras adquiridas por compra es de: ", r[1], "\n")
         printSortResults(r[0])
 
-    
+    elif int(inputs[0]) == 4:
+        artistName = input("Ingrese el nombre del artista: ")
+        answer = controller.tecniqueByArtist(catalog, artistName)
+        print("Total Obras: " + str(answer["Total obras"]))
+        print("Total Tecnicas: " + str(answer["Total tecnicas"]))
+        print("Tecnica más utilizada: " + str(answer["Tecnica mas utilizada"]))
+        print("El listado de las obras de dicha técnica: " + str(answer["Listado"]))
+
     elif int(inputs[0]) == 5:
         print("Cargando clasificación... \n")
         artworksbyn = controller.ArtworksPerNationality(catalog)

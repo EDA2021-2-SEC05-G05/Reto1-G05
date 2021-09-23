@@ -93,3 +93,6 @@ def checkartworks(artworks):
     return model.checkartworks(artworks)
 def DepartmentCost(depa, catalog):
     return model.DepartmentCost(depa, catalog)
+
+def tecniqueByArtist(catalog, artistName):
+    return model.tecniqueByArtist(catalog, artistName)
